@@ -64,7 +64,7 @@ class ThingPage extends Component {
 
     if(deviceList.length>0){
       dropdownRender = [<option key= "" name= "" value="">Select Device URN</option>];
-      let j;
+      let j, k;
       for(var i=0;i<deviceList.length; i++){
         j= deviceList[i].uniqueId;
         k= deviceList[i].urn

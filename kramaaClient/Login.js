@@ -18,6 +18,7 @@ class Login extends Component {
       };
 
       this.handleChange = this.handleChange.bind(this);
+      this.componentWillMount = this.componentWillMount.bind(this);
       this.onSubmitForm = this.onSubmitForm.bind(this);
       this.onSubmitResetForm = this.onSubmitResetForm.bind(this);
       this.forgotPassword = this.forgotPassword.bind(this);
@@ -30,6 +31,16 @@ class Login extends Component {
       console.log("name", name, "value", value);
       this.setState({ [name]: value });
     }
+
+    componentWillMount(){
+      axios.post("/api/users/isLoggedIn", {clientToken: sessionStorage.getItem("clientToken")})
+      .then(res=> {
+        if(res.data.status==true){
+          this.props.history.push('/dashboard');
+        }
+      });
+    }
+
     onSubmitForm(e) {
       e.preventDefault();
       axios.post("/api/users/userLogin", {email: this.state.email, password: this.state.password}).then(res=> {
