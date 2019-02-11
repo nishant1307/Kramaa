@@ -17,5 +17,15 @@ module.exports = {
         });
       });
     });
+  },
+
+  getDeviceInfo: (req, res) => {
+    Device.findOne({
+      where: {
+        uniqueId: req.body.deviceID
+      }
+    }).then(device => {
+      res.send({device: device});
+    })
   }
 }

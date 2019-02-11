@@ -6,9 +6,6 @@ var Client = db.client;
 const jwt = require('jsonwebtoken');
 var configAuth = require('../config');
 
-
-router.post('/deviceList',isLoggedIn, impl.deviceList);
-router.post('/getDeviceInfo', isLoggedIn, impl.getDeviceInfo);
 module.exports = router;
 
 // route middleware to make sure a user is logged in

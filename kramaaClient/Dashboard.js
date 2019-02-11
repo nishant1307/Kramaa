@@ -14,7 +14,6 @@ class Dashboard extends Component {
       email: '',
       name: '',
       projectList: [],
-      projectForm: '',
       organization: '',
       deviceCount: '',
       projectCount: '',
@@ -72,13 +71,9 @@ class Dashboard extends Component {
     })
   }
 
-  mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
-    this.renderDeviceModal();
-    axios.post('/api/projects/mintNewToken', {tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
-    .then(res => {
-      this.setState({
-        deviceCount: parseInt(this.state.deviceCount)+ parseInt(to) - parseInt(from) +1
-      })
+  mintTokenFormHandler(newDeviceCount) {
+    this.setState({
+      deviceCount: parseInt(this.state.deviceCount)+ parseInt(newDeviceCount)
     })
   }
 
@@ -120,7 +115,7 @@ class Dashboard extends Component {
   }
 
   render(){
-    const { email, projectList, projectForm, organization, projectCount, deviceCount, thingCount, loading} = this.state;
+    const { email, projectList, organization, projectCount, deviceCount, thingCount, loading} = this.state;
     let dashboardRender;
     if(loading){
       dashboardRender=  <Col>
@@ -167,49 +162,47 @@ class Dashboard extends Component {
           </Card>
         </Col>
       </Row>
-      <Row>
-      <Col xs="12" sm="6" md="4">
-        <Card className="text-white bg-primary text-center">
-          <CardBody onClick= {this.renderProjectModal}>
-            <blockquote className="card-bodyquote">
-              <p>Create new project</p>
-              <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
-            </blockquote>
-          </CardBody>
-        </Card>
-        <ProjectFormModal ref= {this.projectModalToggler} isClosed= "true" parentHandler= {this.projectFormHandler}/>
-      </Col>
-      <Col xs="12" sm="6" md="4">
-        <Card className="text-white bg-primary text-center">
-          <CardBody onClick= {this.renderDeviceModal}>
-            <blockquote className="card-bodyquote">
-              <p>Add new device</p>
-              <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
-            </blockquote>
-          </CardBody>
-        </Card>
-        <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler} projectList={projectList}/>
-      </Col>
-      <Col xs="12" sm="6" md="4">
-      <Card className="text-white bg-primary text-center">
-        <CardBody onClick= {this.renderThingModal}>
-          <blockquote className="card-bodyquote">
-            <p>Add new thing</p>
-            <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
-          </blockquote>
-        </CardBody>
-      </Card>
-          <RegisterThingModal ref= {this.thingModalToggler} parentHandler= {this.thingFormHandler}/>
-      </Col>
-      </Row>
-      {projectForm}
-
       </div>;
     }
     return(
 
       <div>
         {dashboardRender}
+        <Row>
+          <Col xs="12" sm="6" md="4">
+            <Card className="text-white bg-primary text-center">
+              <CardBody onClick= {this.renderProjectModal}>
+                <blockquote className="card-bodyquote">
+                  <p>Create new project</p>
+                  <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
+                </blockquote>
+              </CardBody>
+            </Card>
+            <ProjectFormModal ref= {this.projectModalToggler} isClosed= "true" parentHandler= {this.projectFormHandler}/>
+          </Col>
+          <Col xs="12" sm="6" md="4">
+            <Card className="text-white bg-primary text-center">
+              <CardBody onClick= {this.renderDeviceModal}>
+                <blockquote className="card-bodyquote">
+                  <p>Add new device</p>
+                  <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
+                </blockquote>
+              </CardBody>
+            </Card>
+            <RegisterDeviceModal ref= {this.deviceModalToggler} parentHandler= {this.mintTokenFormHandler} projectList={projectList}/>
+          </Col>
+          <Col xs="12" sm="6" md="4">
+          <Card className="text-white bg-primary text-center">
+            <CardBody onClick= {this.renderThingModal}>
+              <blockquote className="card-bodyquote">
+                <p>Add new thing</p>
+                <footer><i className="fa fa-plus-circle font-2xl d-block mt-4"></i></footer>
+              </blockquote>
+            </CardBody>
+          </Card>
+              <RegisterThingModal ref= {this.thingModalToggler} parentHandler= {this.thingFormHandler}/>
+          </Col>
+        </Row>
       </div>
     )
   }

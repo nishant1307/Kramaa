@@ -28,6 +28,7 @@ class App extends Component{
             <Route exact path="/things" component={Layout}/>
             <Route exact path="/thing/:thingID" component={Layout}/>
             <Route exact path="/project/:projectID" component={Layout}/>
+            <Route exact path="/device/:deviceID" component={Layout}/>
             <Route exact path="/invitation" component={Invitation}/>
             <Route exact path="/" component={Login}/>
             <Route exact path="/register" component={Register}/>

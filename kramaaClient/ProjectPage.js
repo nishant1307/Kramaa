@@ -26,10 +26,9 @@ class ProjectPage extends Component {
     this.deviceModalToggler.current.toggle();
   }
 
-  mintTokenFormHandler(from, to, tokenURI, deviceURN, projectName) {
-    axios.post('/api/projects/mintNewToken', {projectAddress: projectName, tokenIDFrom: from, tokenIDTo: to, tokenURI: tokenURI, projectName: projectName, deviceURN: deviceURN, clientToken: sessionStorage.getItem("clientToken")})
-    .then(res => {
-      console.log(res);
+  mintTokenFormHandler(newDeviceCount) {
+    this.setState({
+      totalSupply: parseInt(this.state.totalSupply)+ parseInt(newDeviceCount)
     })
   }
 

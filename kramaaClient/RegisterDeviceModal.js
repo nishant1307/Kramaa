@@ -64,13 +64,14 @@ class RegisterDeviceModal extends Component {
 
   onSubmitForm(e) {
     e.preventDefault();
-    this.props.parentHandler(
-      this.state.totalSupply,
-      this.state.tokenIDTo,
-      {protocol: this.state.protocol, registryID: this.state.registryID, sensor: this.state.sensor},
-      this.state.deviceURN,
-      this.state.selectedProject
-    )
+    this.toggle();
+    axios.post('/api/projects/mintNewToken', {tokenIDFrom: this.state.totalSupply, tokenIDTo: this.state.tokenIDTo, tokenURI: {protocol: this.state.protocol, registryID: this.state.registryID, sensor: this.state.sensor}, projectName: this.state.selectedProject, deviceURN: this.state.deviceURN, clientToken: sessionStorage.getItem("clientToken")})
+    .then(res => {
+      this.props.parentHandler(
+        this.state.number
+      );
+    })
+
   }
 
   render() {
