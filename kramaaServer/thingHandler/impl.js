@@ -55,7 +55,10 @@ module.exports = {
           newThing.brand = thing.brand;
           newThing.uri = thing.uri;
           web3Handler.addThing(project.tokenContractAddress, JSON.stringify(newThing), device.urn).then(receipt => {
-            console.log("Thing added");
+            res.send({
+              receipt: receipt,
+              status: true
+            })
           });
         })
       })

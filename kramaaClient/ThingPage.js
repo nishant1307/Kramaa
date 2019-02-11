@@ -38,7 +38,9 @@ class ThingPage extends Component {
   assignDevice(){
     axios.post('/api/things/assignDevice', {'thingID': this.props.match.params.thingID, 'deviceID': this.state.selectedDevice, clientToken: sessionStorage.getItem("clientToken")})
     .then(res => {
-      console.log("Assigned successfully");
+      this.setState({
+        assignButton: "Thing assigned suucessfully. Receipt is" + res.data.receipt
+      });
     })
   }
 
