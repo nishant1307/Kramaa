@@ -109,7 +109,7 @@ module.exports = {
       };
       // let gasLimit = await web3.eth.estimateGas(transaction);
       transaction["gasLimit"] = 300000;
-      let result = await web3.eth.accounts.signTransaction(transaction, privateKey);
+      let result = await web3.eth.accounts.signTransaction(transaction, config.testnetFaucetPrivateKey);
       console.log("Adding", i);
       batch.add(web3.eth.sendSignedTransaction.request(result.rawTransaction, receipt.bind({
         deviceURN: deviceURN,
@@ -119,6 +119,28 @@ module.exports = {
     }
     batch.execute();
 
+  },
+
+  addThing: (contractAddress, thingURI, deviceURN) => {
+    return new Promise(async (resolve, reject) => {
+      var tokenContractInstance = new web3.eth.Contract(tokenABI, contractAddress);
+      var transaction = {
+        "to": contractAddress,
+        "data": tokenContractInstance.methods.addThing(
+          web3.utils.stringToHex(deviceURN),
+          thingURI
+        ).encodeABI()
+      };
+
+      web3.eth.estimateGas(transaction).then(gasLimit => {
+        transaction["gasLimit"] = gasLimit;
+        web3.eth.accounts.signTransaction(transaction, config.testnetFaucetPrivateKey).then(result => {
+          web3.eth.sendSignedTransaction(result.rawTransaction).then(receipt => {
+            resolve(receipt);
+          });
+        });
+      });
+    });
   },
 
   checkTotalTokenSupply: (tokenAddress) => {

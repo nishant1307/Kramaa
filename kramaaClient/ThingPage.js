@@ -14,10 +14,12 @@ class ThingPage extends Component {
       associationStatus: '',
       uri: [],
       deviceList: [],
-      selectedDevice: ''
+      selectedDevice: '',
+      assignButton: ''
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.assignDevice = this.assignDevice.bind(this);
     this.fetchDeviceList = this.fetchDeviceList.bind(this);
   }
 
@@ -25,6 +27,19 @@ class ThingPage extends Component {
     const { name, value } = e.target;
     console.log("name", name, "value", value);
     this.setState({ [name]: value });
+    if(name=="selectedDevice"){
+      this.setState({
+        assignButton: <Button color="primary" onClick={this.assignDevice}>Assign to this device </Button>
+      })
+    }
+
+  }
+
+  assignDevice(){
+    axios.post('/api/things/assignDevice', {'thingID': this.props.match.params.thingID, 'deviceID': this.state.selectedDevice, clientToken: sessionStorage.getItem("clientToken")})
+    .then(res => {
+      console.log("Assigned successfully");
+    })
   }
 
   componentDidMount() {
@@ -54,7 +69,7 @@ class ThingPage extends Component {
     });
   }
   render(){
-    const {name, description, id, brand, associationStatus, uri, deviceList, selectedDevice} = this.state;
+    const {name, description, id, brand, associationStatus, uri, deviceList, selectedDevice, assignButton} = this.state;
     let imageRender = [];
     for(let i=0; i<uri.length; i++){
       imageRender.push(<ListGroupItem>Image {i+1}: <img width="300" height="300" src={"https://gateway.ipfs.io/ipfs/"+uri[i]} /></ListGroupItem>);
@@ -92,10 +107,11 @@ class ThingPage extends Component {
             </Card>
           </Col>
           <Col xs="12" sm="6">
-            <Button color="primary" onClick={this.fetchDeviceList}>Assign to device </Button>
+            <Button color="primary" onClick={this.fetchDeviceList}>Fetch Device List to associate </Button>
             <Input type="select" name= "selectedDevice" value= {selectedDevice} onChange={this.handleChange} id="select">
               {dropdownRender}
             </Input>
+            {assignButton}
           </Col>
         </Row>
       </div>

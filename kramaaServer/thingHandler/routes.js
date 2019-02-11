@@ -8,6 +8,7 @@ var configAuth = require('../config');
 
 router.post('/thingList', isLoggedIn, impl.thingList);
 router.post('/getThingInfo', isLoggedIn, impl.getThingInfo);
+router.post('/assignDevice', isLoggedIn, impl.assignDevice);
 module.exports = router;
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
