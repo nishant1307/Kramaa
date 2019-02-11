@@ -169,23 +169,28 @@ module.exports = {
 }
 
 function receipt(err, receipt) {
-  Device.create({
-    urn: this.deviceURN,
-    tokenId: this.tokenId,
-    transactionHash: receipt
-  }).then(device => {
-    Project.findOne({
-      where: {
-        name: this.projectName
-      }
-    }).then(project => {
-      project.getOrganization().then(organization => {
-        project.addDevice(device);
-        organization.addDevice(device);
-        console.log("Device created successsfully");
+  if(receipt){
+    Device.create({
+      urn: this.deviceURN,
+      tokenId: this.tokenId,
+      transactionHash: receipt
+    }).then(device => {
+      Project.findOne({
+        where: {
+          name: this.projectName
+        }
+      }).then(project => {
+        project.getOrganization().then(organization => {
+          project.addDevice(device);
+          organization.addDevice(device);
+          console.log("Device created successsfully");
+        })
       })
     })
-  })
+  }
+  else if(err) {
+    console.log("Device could not be created", err);
+  }
 }
 
 function providerHandler(provider, ws_provider, web3) {
