@@ -116,20 +116,17 @@ module.exports = {
       }
     }).then(client => {
       if(!client){
-        res.send({"status": "No such user"});
+        res.status(400).json({"message": "No such user"});
       } else if (!bcrypt.compareSync(req.body.password, client.password)){
-        res.send({"status": "Wrong password"});
+        res.status(400).json({"message": "Wrong password"});
       } else {
         const token = jwt.sign({
           clientId: client.uniqueId,
         }, configAuth.jwtAuthKey.secret, {
             expiresIn: configAuth.jwtAuthKey.tokenLife
           });
-        //Send back the token to the user
-        // res.cookie('token', token, {
-        //   expire: 360000 + Date.now()
-        // });
-        res.send({"status": "Yay", "clientToken": token})
+
+        res.send({success: true, clientToken: token})
 
       }
     })

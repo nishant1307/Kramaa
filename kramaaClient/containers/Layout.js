@@ -22,6 +22,11 @@ import routes from '../routes';
 const Footer = React.lazy(() => import('./Footer'));
 const Header = React.lazy(() => import('./Header'));
 
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { logoutUser } from '../actions/authentication';
+import { withRouter } from 'react-router-dom';
+
 class Layout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
 
@@ -36,8 +41,7 @@ class Layout extends Component {
 
   signOut(e) {
     e.preventDefault()
-    sessionStorage.clear();
-    this.props.history.push('/');
+    this.props.logoutUser(this.props.history);
   }
 
   render() {
@@ -90,4 +94,8 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+const mapStateToProps = (state) => ({
+    auth: state.auth
+})
+
+export default connect(mapStateToProps, { logoutUser })(withRouter(Layout));
