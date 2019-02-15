@@ -1,9 +1,10 @@
 // authentication.js
 
 import axios from 'axios';
-import { GET_ERRORS, SET_CURRENT_USER } from './types';
+import { GET_ERRORS, SET_CURRENT_USER, CURRENT_USER_INFO } from './types';
 import setAuthToken from '../setAuthToken';
 import jwt_decode from 'jwt-decode';
+import {currentUserInfo} from './userActions';
 
 export const registerUser = (user, history) => dispatch => {
     axios.post('/api/users/userRegistration', user)
@@ -27,6 +28,7 @@ export const loginUser = (user) => dispatch => {
                 sessionStorage.setItem("clientToken", clientToken);
                 setAuthToken(clientToken);
                 const decoded = jwt_decode(clientToken);
+                dispatch(currentUserInfo(clientToken));
                 dispatch(setCurrentUser(decoded));
             })
             .catch(err => {
@@ -45,8 +47,12 @@ export const setCurrentUser = decoded => {
 }
 
 export const logoutUser = (history) => dispatch => {
-    localStorage.removeItem('clientToken');
+    sessionStorage.removeItem('clientToken');
     setAuthToken(false);
     dispatch(setCurrentUser({}));
+    dispatch({
+      type: CURRENT_USER_INFO,
+      payload: {}
+    });
     history.push('/');
 }

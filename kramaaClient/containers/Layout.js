@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import axios from "axios";
 
@@ -24,19 +24,28 @@ const Header = React.lazy(() => import('./Header'));
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser } from '../actions/authentication';
 import { withRouter } from 'react-router-dom';
-
+import jwt_decode from 'jwt-decode';
+import setAuthToken from '../setAuthToken';
+import { setCurrentUser, logoutUser } from '../actions/authentication';
 class Layout extends Component {
   loading = () => <div className="animated fadeIn pt-1 text-center"><div className="sk-spinner sk-spinner-pulse"></div></div>;
 
   componentWillMount(){
-    axios.post("/api/users/isLoggedIn", {clientToken: sessionStorage.getItem("clientToken")})
-    .then(res=> {
-      if(res.data.status==false){
-        this.props.history.push('/');
+    if(sessionStorage.clientToken) {
+      const currentTime = Date.now() / 1000;
+      const decoded = jwt_decode(sessionStorage.clientToken);
+      console.log(decoded);
+      if(decoded.exp < currentTime) {
+        sessionStorage.removeItem('clientToken');
+        setAuthToken(false);
+        this.props.logoutUser(this.props.history);
       }
-    });
+      else {
+        setAuthToken(sessionStorage.clientToken);
+        this.props.setCurrentUser(decoded);
+      }
+    }
   }
 
   signOut(e) {
@@ -98,4 +107,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 })
 
-export default connect(mapStateToProps, { logoutUser })(withRouter(Layout));
+export default connect(mapStateToProps, { setCurrentUser, logoutUser })(withRouter(Layout));

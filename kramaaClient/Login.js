@@ -9,6 +9,7 @@ import { loginUser } from './actions/authentication';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import './ValidationForms.css'
 
 const validationSchema = function (values) {
   return Yup.object().shape({
@@ -73,19 +74,9 @@ class Login extends Component {
       this.setState({ [name]: value });
     }
 
-    onSubmit = (values, {
-          props = this.props,
-          setSubmitting
-    }) => {
-        console.log(values);
-        //process form submission here
-        //done submitting, set submitting to false
-        setSubmitting(false);
-        return;
-    }
-
     componentWillReceiveProps(nextProps) {
         if(nextProps.auth.isAuthenticated) {
+          console.log("Back to dashboard");
             this.props.history.push('/dashboard')
         }
         if(nextProps.errors) {

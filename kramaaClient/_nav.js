@@ -12,11 +12,6 @@ export default {
       icon: 'cui-list',
       children: [
         {
-          name: 'Create Project',
-          url: '/newProject',
-          icon: 'icon-puzzle',
-        },
-        {
           name: 'View Projects',
           url: '/projects',
           icon: 'cui-magnifying-glass',

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Link} from "react-router-dom";
 import axios from "axios";
 import ColleagueForm from './ColleagueForm';
 import {Col, Card, CardBody, CardHeader, ListGroup, ListGroupItem, Button} from 'reactstrap';
+import { connect } from 'react-redux';
 
 class Profile extends Component {
   constructor(props){
@@ -15,20 +16,17 @@ class Profile extends Component {
       organization: ''
     };
 
-    this.componentDidMount = this.componentDidMount.bind(this);
     this.renderColleagueForm = this.renderColleagueForm.bind(this);
-    this.goToLogin = this.goToLogin.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
 
   componentDidMount() {
-    axios.post("/api/dashboard/getUserInfo", {clientToken:  sessionStorage.getItem("clientToken")})
-    .then(res => {
-      this.setState({
-        user: res.data.user
-      })
-    })
+    // axios.post("/api/dashboard/getUserInfo", {clientToken:  sessionStorage.getItem("clientToken")})
+    // .then(res => {
+    //   this.setState({
+    //     user: res.data.user
+    //   })
+    // })
 
     axios.post("/api/dashboard/projectList", {clientToken: sessionStorage.getItem("clientToken")})
     .then(res=> {
@@ -45,15 +43,6 @@ class Profile extends Component {
     this.setState({'colleagueForm': <ColleagueForm/>});
   }
 
-  goToLogin() {
-    this.props.history.push('/login');
-  }
-
-  logout() {
-    sessionStorage.clear();
-    this.props.history.push('/');
-  }
-
   render(){
     const { projectList, colleagueForm, organization, user} = this.state;
     return(
@@ -65,10 +54,10 @@ class Profile extends Component {
             </CardHeader>
             <CardBody>
               <ListGroup>
-                <ListGroupItem>Organization Name: {organization.organizationName}</ListGroupItem>
-                <ListGroupItem>Organization ID: {organization.uniqueId}</ListGroupItem>
-                <ListGroupItem>First Name: {user.firstName}</ListGroupItem>
-                <ListGroupItem>Last Name: {user.lastName}</ListGroupItem>
+                <ListGroupItem>Organization Name: {this.props.user.organization.organizationName}</ListGroupItem>
+                <ListGroupItem>Organization ID: {this.props.user.organization.uniqueId}</ListGroupItem>
+                <ListGroupItem>First Name: {this.props.user.user.firstName}</ListGroupItem>
+                <ListGroupItem>Last Name: {this.props.user.user.lastName}</ListGroupItem>
               </ListGroup>
             </CardBody>
           </Card>
@@ -80,4 +69,9 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapStateToProps = (state) => ({
+    user: state.user,
+    errors: state.errors
+})
+
+export default connect(mapStateToProps)(Profile);

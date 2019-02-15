@@ -2,7 +2,7 @@ module.exports = {
 
   'jwtAuthKey': {
     'secret': "kramaa",
-    'tokenLife': 60*30
+    'tokenLife': 30*60
   },
 
   testnetEndpoint: "http://78.129.208.129:8545",

@@ -56,8 +56,8 @@ module.exports = {
             req.client.getOrganization().then(organization => {
               organization.addProject(project);
               res.send({
-                "status": "Project created successsfully",
-                "project": project
+                success: true,
+                project: project
               });
             });
           });
@@ -97,16 +97,25 @@ module.exports = {
       organization.getProjects().then(projects => {
         organization.getDevices().then(devices => {
           organization.getThings().then(things => {
-            res.send({
-              "organization": organization,
-              "client": req.client,
-              "projectCount": projects.length,
-              "deviceCount": devices.length,
-              "thingsCount": things.length
+            res.status(200).json({
+              success: true,
+              organization: organization,
+              client: req.client,
+              projectCount: projects.length,
+              deviceCount: devices.length,
+              thingsCount: things.length
             });
+          }).catch(err => {
+            res.status(400).json({message: err})
           })
+        }).catch(err => {
+          res.status(400).json({message: err})
         })
-      });
-    });
+      }).catch(err => {
+        res.status(400).json({message: err})
+      })
+    }).catch(err => {
+      res.status(400).json({message: err})
+    })
   }
 }

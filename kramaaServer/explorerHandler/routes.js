@@ -6,6 +6,7 @@ var Client = db.client;
 const jwt = require('jsonwebtoken');
 var configAuth = require('../config');
 
+router.post('/fetchByTransactionHash', impl.fetchByTransactionHash);
 module.exports = router;
 
 // route middleware to make sure a user is logged in

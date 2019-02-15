@@ -1,6 +1,67 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, FormText,Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import axios from "axios";
+
+import { connect } from 'react-redux';
+import { createNewProject, closeProjectModal } from './actions/userActions';
+
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = function (values) {
+  return Yup.object().shape({
+    name: Yup.string()
+    .min(2, `Project name has to be at least 2 characters`)
+    .required('Project name is required'),
+    lastName: Yup.string()
+    .min(1, `Last name has to be at least 1 character`)
+    .required('Last name is required'),
+    organizationName: Yup.string()
+    .min(1, `Organization name has to be at least 1 characters`)
+    .required('Organization name is required'),
+    password: Yup.string()
+    .min(6, `Password has to be at least ${6} characters!`)
+    .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/, 'Password must contain: numbers, uppercase and lowercase letters\n')
+    .required('Password is required'),
+    confirmPassword: Yup.string()
+    .oneOf([values.password], 'Passwords must match')
+    .required('Password confirmation is required'),
+  })
+}
+
+const validate = (getValidationSchema) => {
+  return (values) => {
+    const validationSchema = getValidationSchema(values)
+    try {
+      validationSchema.validateSync(values, { abortEarly: false })
+      return {}
+    } catch (error) {
+      return getErrorsFromValidationError(error)
+    }
+  }
+}
+
+const getErrorsFromValidationError = (validationError) => {
+  const FIRST_ERROR = 0
+  return validationError.inner.reduce((errors, error) => {
+    return {
+      ...errors,
+      [error.path]: error.errors[FIRST_ERROR],
+    }
+  }, {})
+}
+
+const initialValues = {
+  firstName: "",
+  lastName: "",
+  organizationName: "",
+  password: "",
+  confirmPassword: "",
+  addressLine1: "",
+  addressLine2: "",
+  addressLine3: ""
+}
+
 class ProjectFormModal extends Component {
 
   constructor(props) {
@@ -39,9 +100,7 @@ class ProjectFormModal extends Component {
   }
 
   toggle() {
-    this.setState({
-      modal: !this.state.modal,
-    });
+    this.props.closeProjectModal();
   }
 
   handleChange(e) {
@@ -64,13 +123,14 @@ class ProjectFormModal extends Component {
       isLoading: true
     })
     const {name, description, industry, subIndustry, tokenName, tokenSymbol, isLoading} = this.state;
-    axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: name, tokenSymbol: name, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
-      if(res.data.status=="Project created successsfully"){
-        this.reset();
-        this.toggle();
-        this.props.parentHandler(res.data.project.name)
-      }
-    });
+    // axios.post("/api/dashboard/createProject", {name: name, industry: industry, subIndustry: subIndustry, tokenName: name, tokenSymbol: name, clientToken: sessionStorage.getItem("clientToken")}).then(res=> {
+    //   if(res.data.status=="Project created successsfully"){
+    //     this.reset();
+    //     this.toggle();
+    //     this.props.parentHandler(res.data.project.name)
+    //   }
+    // });
+    this.props.createNewProject({name: name, industry: industry, subIndustry: subIndustry, tokenName: name, tokenSymbol: name, clientToken: sessionStorage.getItem("clientToken")});
   }
 
   render() {
@@ -91,7 +151,7 @@ class ProjectFormModal extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col>
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+            <Modal isOpen={this.props.user.projectModalOpen} toggle={this.toggle} className={this.props.className}>
               <ModalHeader toggle={this.toggle}><strong>New Project Form</strong></ModalHeader>
               <ModalBody>
               <Form className="form-horizontal">
@@ -100,7 +160,10 @@ class ProjectFormModal extends Component {
                     <Label htmlFor="text-input">Project Name</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="text" name="name" value= {name} onChange={this.handleChange}  id="text-input" placeholder="Text" />
+                    <Input type="text"
+                           name="name"
+                           value= {name}
+                           onChange={this.handleChange}  id="text-input" placeholder="Text" />
                     <FormText color="muted">This is a help text</FormText>
                   </Col>
                 </FormGroup>
@@ -155,4 +218,10 @@ class ProjectFormModal extends Component {
   }
 }
 
-export default ProjectFormModal;
+
+const mapStateToProps = (state) => ({
+    user: state.user,
+    errors: state.errors
+});
+
+export  default connect(mapStateToProps, { createNewProject, closeProjectModal })(ProjectFormModal)

@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const devMode = process.env.NODE_ENV !== 'production'
 
 module.exports = {
@@ -46,6 +47,8 @@ module.exports = {
     contentBase: path.join(__dirname, "./kramaaClient"),
     port: 4001,
     historyApiFallback: true,
+    inline: true,
+    hot: true,
     hotOnly: true,
     proxy: {
       '/api/*': 'http://localhost:80'
