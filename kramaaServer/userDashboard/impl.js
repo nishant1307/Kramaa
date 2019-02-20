@@ -19,9 +19,7 @@ module.exports = {
     req.client.getOrganization().then(organization => {
       organization.getProjects().then(projects => {
         res.send({
-          "client": req.client,
-          "projects": projects,
-          "organization": organization
+          "projects": projects
         });
       });
     });

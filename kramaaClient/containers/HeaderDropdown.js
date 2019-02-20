@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Progress } from 'reactstrap';
+import { Badge, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
 const propTypes = {
   notif: PropTypes.bool,
@@ -24,6 +24,11 @@ class HeaderDropdown extends Component {
     this.state = {
       dropdownOpen: false,
     };
+    this.goToUserDatabase = this.goToUserDatabase.bind(this);
+  }
+
+  goToUserDatabase() {
+    this.props.history.push('/userDatabase')
   }
 
   toggle() {
@@ -61,7 +66,7 @@ class HeaderDropdown extends Component {
           <DropdownItem><i className="fa fa-wrench"></i> Organization Profile</DropdownItem>
           <DropdownItem><i className="fa fa-usd"></i> Organization Manager</DropdownItem>
           <DropdownItem><i className="fa fa-file"></i> Organization Details</DropdownItem>
-          <DropdownItem><i className="fa fa-file"></i> User Database</DropdownItem>
+          <DropdownItem onClick={this.goToUserDatabase}><i className="fa fa-file"></i> User Database</DropdownItem>
           <DropdownItem divider />
           <DropdownItem onClick={this.props.onLogout}><i className="fa fa-lock"></i> Logout</DropdownItem>
         </DropdownMenu>

@@ -5,6 +5,7 @@ const Projects = React.lazy(() => import('./Projects'));
 const Things = React.lazy(() => import('./Things'));
 const Devices = React.lazy(() => import('./Devices'));
 const ProjectFormModal = React.lazy(() => import('./ProjectFormModal'));
+const UserDatabase = React.lazy(() => import('./UserDatabase'));
 // import Dashboard from './Dashboard';
 // import Profile from './Profile';
 // import Projects from './Projects';
@@ -25,6 +26,7 @@ const routes = [
   { path: '/device/:deviceID', name: 'DevicePage', component: DevicePage},
   { path: '/dashboard', name: 'Dashboard', component: Dashboard},
   { path: '/newProject', name: 'New Project', component: ProjectFormModal},
+  { path: '/userDatabase', name: 'User Database', component: UserDatabase},
 ];
 
 export default routes;

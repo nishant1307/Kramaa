@@ -8,24 +8,16 @@ class Projects extends Component {
   constructor(props){
     super(props);
     this.state = {
-      email: '',
-      name: '',
-      projectList: [],
-      projectForm: '',
-      organization: ''
+      projectList: []
     };
 
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.goToLogin = this.goToLogin.bind(this);
     this.goToProject = this.goToProject.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
     axios.post("/api/dashboard/projectList", {clientToken: sessionStorage.getItem("clientToken")})
     .then(res=> {
-      this.setState({"email": res.data.client.email, projectList: res.data.projects, organization: res.data.organization})
-      console.log(res.data.projects[0].uniqueId);
+      this.setState({projectList: res.data.projects})
     });
   }
 
@@ -34,17 +26,8 @@ class Projects extends Component {
     this.props.history.push('/project/'+uniqueId);
   }
 
-  goToLogin() {
-    this.props.history.push('/login');
-  }
-
-  logout() {
-    sessionStorage.clear();
-    this.props.history.push('/');
-  }
-
   render(){
-    const { email, projectList, projectForm, organization} = this.state;
+    const { projectList} = this.state;
     const columns = [{
       Header: 'Project ID',
       accessor: 'uniqueId'
@@ -58,12 +41,9 @@ class Projects extends Component {
       Header: 'Sub Industry',
       accessor: 'subIndustry'
     }, {
-      Header: 'Token Symbol',
-      accessor: 'tokenSymbol'
-    },  {
-      Header: 'Token Name',
-      accessor: 'tokenName'
-    },  {
+      Header: 'Contract Address',
+      accessor: 'tokenContractAddress'
+    }, {
       Header: 'Action',
       Cell: ({ row }) => (<Button block onClick={(e) => this.goToProject(row.uniqueId)} color="primary">View</Button>)
     }];

@@ -10,6 +10,7 @@ import { loginUser } from './actions/authentication';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import './ValidationForms.css'
+import loginBackground from './assets/loginBackground.jpg';
 
 const validationSchema = function (values) {
   return Yup.object().shape({
@@ -270,7 +271,11 @@ class Login extends Component {
             </CardGroup>;
         }
         return (
-          <div className="app flex-row align-items-center">
+          <div className="app flex-row align-items-center" style = {{ backgroundImage: 'url(' + loginBackground + ')',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+              }}>
             <Container>
             <Suspense fallback={this.loading()}>
             </Suspense>

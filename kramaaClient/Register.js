@@ -10,6 +10,7 @@ const SITEKEY = "6LcSQ5AUAAAAADkqQKiKrkM4_4xScRtChBrSjOwT";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { registerUser } from './actions/authentication';
+import loginBackground from './assets/loginBackground.jpg';
 import PropTypes from 'prop-types';
 
 const validationSchema = function (values) {
@@ -383,7 +384,11 @@ class Register extends Component {
             </div>;
         }
         return (
-          <div className="app flex-row align-items-center">
+          <div className="app flex-row align-items-center" style = {{ backgroundImage: 'url(' + loginBackground + ')',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+              }}>
             <Container>
               <Row className="justify-content-center">
                 <Col md="9" lg="7" xl="6">

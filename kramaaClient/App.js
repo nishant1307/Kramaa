@@ -24,6 +24,7 @@ class App extends Component{
             <div>
               <Route exact path="/dashboard" component={Layout}/>
               <Route path="/newProject" component={Layout}/>
+              <Route path="/userDatabase" component={Layout}/>
               <Route exact path="/profile" component={Layout}/>
               <Route exact path="/settings" component={Layout}/>
               <Route exact path="/projects" component={Layout}/>
