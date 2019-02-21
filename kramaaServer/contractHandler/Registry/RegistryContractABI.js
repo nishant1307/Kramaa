@@ -8,23 +8,15 @@ const ABI = [
 			},
 			{
 				"name": "name",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"name": "description",
-				"type": "bytes32"
-			},
-			{
-				"name": "tokenName",
-				"type": "bytes32"
-			},
-			{
-				"name": "tokenSymbol",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"name": "organizationName",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"name": "addNewProject",
@@ -38,7 +30,7 @@ const ABI = [
 		"inputs": [
 			{
 				"name": "organizationName",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"name": "managerAddresses",
@@ -57,8 +49,8 @@ const ABI = [
 	},
 	{
 		"inputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
 	{
@@ -66,7 +58,7 @@ const ABI = [
 		"inputs": [
 			{
 				"name": "organizationName",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"name": "getProjectAddressesFromOrganizationName",
@@ -85,7 +77,7 @@ const ABI = [
 		"inputs": [
 			{
 				"name": "projectName",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"name": "getProjectFromProjectName",
@@ -96,61 +88,7 @@ const ABI = [
 			},
 			{
 				"name": "",
-				"type": "bytes32"
-			},
-			{
-				"name": "",
-				"type": "bytes32"
-			},
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "organizationProjectRegistries",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "organizationRegistries",
-		"outputs": [
-			{
-				"name": "name",
-				"type": "bytes32"
-			},
-			{
-				"name": "ownerAddress",
-				"type": "address"
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -186,47 +124,16 @@ const ABI = [
 				"type": "address"
 			},
 			{
-				"name": "description",
-				"type": "bytes32"
-			},
-			{
-				"name": "tokenName",
-				"type": "bytes32"
-			},
-			{
-				"name": "tokenSymbol",
-				"type": "bytes32"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "projectRegistries",
-		"outputs": [
-			{
-				"name": "contractAddress",
-				"type": "address"
+				"name": "name",
+				"type": "string"
 			},
 			{
 				"name": "description",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
-				"name": "tokenName",
-				"type": "bytes32"
-			},
-			{
-				"name": "tokenSymbol",
-				"type": "bytes32"
+				"name": "organizationName",
+				"type": "string"
 			}
 		],
 		"payable": false,

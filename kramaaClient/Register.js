@@ -17,10 +17,15 @@ const validationSchema = function (values) {
   return Yup.object().shape({
     firstName: Yup.string()
     .min(2, `First name has to be at least 2 characters`)
+    .matches(/(?=.*[a-z])(?=.*[A-Z])/, 'First name must contain only A-Z uppercase or lowercase letters\n')
     .required('First name is required'),
     lastName: Yup.string()
     .min(1, `Last name has to be at least 1 character`)
+    .matches(/(?=.*[a-z])(?=.*[A-Z])/, 'Last name must contain only A-Z uppercase or lowercase letters\n')
     .required('Last name is required'),
+    email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required!'),
     organizationName: Yup.string()
     .min(1, `Organization name has to be at least 1 characters`)
     .required('Organization name is required'),
@@ -175,7 +180,7 @@ class Register extends Component {
                   <i className="icon-user"></i>
                 </InputGroupText>
               </InputGroupAddon>
-              <Input type="text" name="email" value= {email} onChange={this.handleChange} placeholder="Enter email" autoComplete="username" />
+              <Input type="email" name="email" value= {email} onChange={this.handleChange} placeholder="Enter email" autoComplete="username" />
             </InputGroup>
             <Button color="success" onClick= {this.onSubmitForm} block>Register</Button>
           </Form>

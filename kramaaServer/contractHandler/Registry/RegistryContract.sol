@@ -1,13 +1,14 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.4;
 
 contract RegistryContract {
 
-    constructor() public payable {
+    constructor() public {
         owner = msg.sender;
+
     }
 
     struct Organization {
-        bytes32 name;
+        string name;
         address[] managerAddresses;
         address ownerAddress;
 
@@ -15,13 +16,13 @@ contract RegistryContract {
 
     struct Project {
         address contractAddress;
-        bytes32 description;
-        bytes32 tokenName;
-        bytes32 tokenSymbol;
+        string name;
+        string description;
+        string organizationName;
     }
-    mapping (bytes32 => Organization) public organizationRegistries;
-    mapping (bytes32 => address[]) public organizationProjectRegistries;
-    mapping (bytes32 => Project) public projectRegistries;
+    mapping (string => Organization) private organizationRegistries;
+    mapping (string => address[]) private organizationProjectRegistries;
+    mapping (string => Project) private projectRegistries;
     mapping (address => Project) public projectAddressMapping;
     address public owner;
 
@@ -30,33 +31,27 @@ contract RegistryContract {
         _;
     }
 
-    function addNewProject(address contractAddress, bytes32 name, bytes32 description, bytes32 tokenName, bytes32 tokenSymbol, bytes32 organizationName) public onlyOwner{
+    function addNewProject(address contractAddress, string memory name, string memory description, string memory organizationName) public onlyOwner{
         Project memory project;
         project.contractAddress = contractAddress;
+        project.name = name;
         project.description = description;
-        project.tokenName = tokenName;
-        project.tokenSymbol = tokenSymbol;
+        project.organizationName = organizationName;
         projectRegistries[name] = project;
         projectAddressMapping[contractAddress] = project;
-        if(organizationRegistries[organizationName].name == ""){
-            organizationRegistries[organizationName].name = organizationName;
-        }
         organizationProjectRegistries[organizationName].push(contractAddress);
     }
 
-    function addOrganizationDetails(bytes32 organizationName, address[] memory managerAddresses, address ownerAddress) public onlyOwner {
-        if(organizationRegistries[organizationName].name == ""){
-            organizationRegistries[organizationName].name = organizationName;
-        }
+    function addOrganizationDetails(string memory organizationName, address[] memory managerAddresses, address ownerAddress) public onlyOwner {
         organizationRegistries[organizationName].managerAddresses = managerAddresses;
         organizationRegistries[organizationName].ownerAddress = ownerAddress;
     }
 
-    function getProjectFromProjectName(bytes32 projectName) public view returns (address, bytes32, bytes32, bytes32) {
-        return (projectRegistries[projectName].contractAddress, projectRegistries[projectName].description, projectRegistries[projectName].tokenName, projectRegistries[projectName].tokenSymbol);
+    function getProjectFromProjectName(string memory projectName) public view returns (address, string memory) {
+        return (projectRegistries[projectName].contractAddress, projectRegistries[projectName].description);
     }
 
-    function getProjectAddressesFromOrganizationName(bytes32 organizationName) public view returns (address[] memory) {
+    function getProjectAddressesFromOrganizationName(string memory organizationName) public view returns (address[] memory) {
         return (organizationProjectRegistries[organizationName]);
     }
 

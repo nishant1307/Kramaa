@@ -16,10 +16,11 @@ class UserDatabase extends Component {
   }
 
   componentDidMount() {
-    axios.post("/api/users/userList", {clientToken: sessionStorage.getItem("clientToken")})
+    axios.post("/api/dashboard/userList", {clientToken: sessionStorage.getItem("clientToken")})
     .then(res=> {
-      this.setState({"email": res.data.client.email, projectList: res.data.projects, organization: res.data.organization})
-      console.log(res.data.projects[0].uniqueId);
+      this.setState({
+        userList: res.data.users
+      });
     });
   }
 
@@ -41,10 +42,9 @@ class UserDatabase extends Component {
       Header: 'Action',
       Cell: ({ row }) => (<Button block onClick={(e) => this.goToProject(row.uniqueId)} color="primary">View</Button>)
     }];
-    console.log(projectList);
     return(
         <ReactTable
-          data={usertList}
+          data={userList}
           columns={columns}
           onFetchData={this.fetchData}
           noDataText="Not available"

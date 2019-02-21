@@ -28,7 +28,7 @@ class HeaderDropdown extends Component {
   }
 
   goToUserDatabase() {
-    this.props.history.push('/userDatabase')
+    this.props.history.push('/userDatabase');
   }
 
   toggle() {
@@ -67,7 +67,6 @@ class HeaderDropdown extends Component {
           <DropdownItem><i className="fa fa-usd"></i> Organization Manager</DropdownItem>
           <DropdownItem><i className="fa fa-file"></i> Organization Details</DropdownItem>
           <DropdownItem onClick={this.goToUserDatabase}><i className="fa fa-file"></i> User Database</DropdownItem>
-          <DropdownItem divider />
           <DropdownItem onClick={this.props.onLogout}><i className="fa fa-lock"></i> Logout</DropdownItem>
         </DropdownMenu>
       </Dropdown>

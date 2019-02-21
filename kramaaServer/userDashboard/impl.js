@@ -15,6 +15,14 @@ module.exports = {
     })
   },
 
+  userList: (req, res) => {
+    req.client.getOrganization().then(organization => {
+      organization.getClients().then(users => {
+        res.status(200).json({ users: users })
+      })
+    })
+  },
+
   projectList: (req, res) => {
     req.client.getOrganization().then(organization => {
       organization.getProjects().then(projects => {
