@@ -1,3 +1,4 @@
 node_modules/
 package-lock.json
 newClient/
+kramaaClient/store.js
