@@ -3,18 +3,22 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const devMode = process.env.NODE_ENV !== 'production'
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: "./kramaaClient/index.js",
   mode: "development",
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: devMode ? '[name].css' : '[name].[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-    })
+    }),
+    new CleanWebpackPlugin(['dist']),
+    // new HtmlWebpackPlugin({
+    //   title: 'Kramaa | Open IOT Registry on Blockchain'
+    // })
   ],
   module: {
     rules: [
@@ -42,16 +46,7 @@ module.exports = {
   resolve: { extensions: ["*", ".js", ".jsx"] },
   output: {
       filename: 'bundle.js',
-  },
-  devServer: {
-    contentBase: path.join(__dirname, "./kramaaClient"),
-    port: 4001,
-    historyApiFallback: true,
-    inline: true,
-    hot: true,
-    hotOnly: true,
-    proxy: {
-      '/api/*': 'http://localhost:80'
-    }
+      path: path.resolve(__dirname, 'dist')
+
   }
 };

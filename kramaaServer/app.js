@@ -25,7 +25,7 @@ app.use('/api/explorer', require('./explorerHandler/routes'));
 app.use(express.static(path.resolve(__dirname, '..','dist')));
 app.use(express.static(path.resolve(__dirname, '..','kramaaClient/assets')));
 app.get('*', function(req, res) {
-  res.sendFile(path.resolve(__dirname, '..', 'dist/index.html'));
+  res.sendFile(path.resolve(__dirname, '..', 'kramaaClient/index.html'));
 });
 
 // catch 404 and forward to error handler
