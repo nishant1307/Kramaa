@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 var configAuth = require('../config');
 
 router.post('/getEvents', impl.getEvents);
+router.post('/getLocation', impl.getLocation);
 
 module.exports = router;
 //

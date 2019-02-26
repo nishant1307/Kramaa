@@ -26,6 +26,10 @@ class App extends Component{
               <Route path="/newProject" component={Layout}/>
               <Route path="/userDatabase" component={Layout}/>
               <Route exact path="/profile" component={Layout}/>
+              <Route exact path="/explorer" component={Layout}/>
+              <Route exact path="/analytics" component={Layout}/>
+              <Route exact path="/locationAnalytics" component={Layout}/>
+              <Route exact path="/contractPage/:contractAddress" component={Layout}/>
               <Route exact path="/settings" component={Layout}/>
               <Route exact path="/projects" component={Layout}/>
               <Route exact path="/devices" component={Layout}/>

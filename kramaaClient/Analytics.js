@@ -6,45 +6,41 @@ import 'react-table/react-table.css';
 import { Button} from 'reactstrap';
 import { connect } from 'react-redux';
 
-class Explorer extends Component {
+class Analytics extends Component {
   constructor(props){
     super(props);
     this.state = {
       email: '',
       name: '',
-      projectList: [],
+      eventList: [],
       organization: ''
     };
   }
 
   componentDidMount() {
-    axios.post("/api/explorer/getProjectsFromOrganizationName", {organizationName: this.props.user.organization.organizationName})
+    axios.post("/api/events/getEvents", {})
     .then(res=> {
       this.setState({
-        projectList: res.data.projectList
+        eventList: res.data.eventList
       })
     });
   }
 
   render(){
-    const { email, projectList, organization} = this.state;
+    const { email, eventList, organization} = this.state;
     const columns = [{
-      Header: 'Contract Address',
-      accessor: 'contractAddress',
-      Cell: (props) => {
-        let url = "/contractPage/"+props.original.contractAddress;
-        return <Link to = {url}>{props.original.contractAddress}</Link>;
-      }
+      Header: 'Event Type',
+      accessor: 'eventType'
     }, {
-      Header: 'Name',
-      accessor: 'name',
+      Header: 'Message',
+      accessor: 'message',
     }, {
-      Header: 'Description',
-      accessor: 'description'
+      Header: 'Created At',
+      accessor: 'createdAt'
     }];
     return(
         <ReactTable
-          data={projectList}
+          data={eventList}
           columns={columns}
           onFetchData={this.fetchData}
           noDataText="Not available"
@@ -72,4 +68,4 @@ const mapStateToProps = (state) => ({
     user: state.user
 })
 
-export default connect(mapStateToProps)(Explorer)
+export default connect(mapStateToProps)(Analytics)

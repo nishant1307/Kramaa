@@ -63,7 +63,7 @@ module.exports = {
     });
   },
 
-  addNewProject: (contractAddress, name, description, tokenName, tokenSymbol, organizationName) => {
+  addNewProject: (contractAddress, name, description, organizationName) => {
     return new Promise(async (resolve, reject) => {
       let registryContractInstance = new web3.eth.Contract(registryABI, config.registryContractAddress);
       let gasPrice = await web3.eth.getGasPrice() * 1.5;
@@ -71,11 +71,9 @@ module.exports = {
         "to": config.registryContractAddress,
         "data": registryContractInstance.methods.addNewProject(
           contractAddress,
-          web3.utils.stringToHex(name),
-          web3.utils.stringToHex(description),
-          web3.utils.stringToHex(tokenName),
-          web3.utils.stringToHex(tokenSymbol),
-          web3.utils.stringToHex(organizationName)
+          name,
+          description,
+          organizationName
         ).encodeABI(),
         gasPrice: gasPrice
       };
@@ -88,6 +86,24 @@ module.exports = {
           });
         });
       });
+    });
+  },
+
+  getProjectsFromOrganizationName: (organizationName) => {
+    return new Promise(async (resolve, reject) => {
+      let registryContractInstance = new web3.eth.Contract(registryABI, config.registryContractAddress, { from: config.testnetFaucetAddress });
+      var applicationData = await registryContractInstance.methods.getProjectsFromOrganizationName(organizationName).call();
+      console.log(applicationData);
+      resolve(applicationData)
+    });
+  },
+
+  getEventsFromContractAddress: (contractAddress) => {
+    return new Promise(async (resolve, reject) => {
+      var tokenContractInstance = new web3.eth.Contract(tokenABI, contractAddress);
+      var events = await tokenContractInstance.events.allEvents();
+      console.log(events);
+      resolve(events)
     });
   },
 

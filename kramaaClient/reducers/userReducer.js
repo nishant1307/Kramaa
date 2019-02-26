@@ -1,6 +1,6 @@
 // userReducer.js
 
-import { CURRENT_USER_INFO, NEW_PROJECT_CREATED, OPEN_PROJECT_MODAL, CLOSE_PROJECT_MODAL } from '../actions/types';
+import { CURRENT_USER_INFO, NEW_PROJECT_CREATED, OPEN_PROJECT_MODAL, CLOSE_PROJECT_MODAL, FETCH_NOTIFICATION } from '../actions/types';
 import isEmpty from '../is-empty';
 
 const initialState = {
@@ -12,7 +12,8 @@ const initialState = {
   userInfoLoader: true,
   projectModalOpen: false,
   deviceModalOpen: false,
-  thingModalOpen: false
+  thingModalOpen: false,
+  notificationList: []
 }
 
 export default function(state = initialState, action ) {
@@ -43,8 +44,14 @@ export default function(state = initialState, action ) {
         case NEW_PROJECT_CREATED:
             return {
               ...state,
-              projectCount: projectCount+1,
+              projectCount: state.projectCount+1,
               projectModalOpen: false
+            }
+            break;
+        case FETCH_NOTIFICATION:
+            return {
+              ...state,
+              notificationList: notificationList
             }
 
         default:

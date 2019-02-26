@@ -2,6 +2,7 @@ var db = require('../database/models/index');
 var Client = db.client;
 var Project = db.project;
 var Thing = db.thing;
+var Notifications = db.notification;
 const mailer = require("../mailer/impl");
 const userOnboarding = require("../userOnboarding/impl");
 const contractHandler = require('../contractHandler/impl');
@@ -39,14 +40,12 @@ module.exports = {
       contractHandler.compileContract(contractCode).then(compiledContract => {
         web3Handler.deployContract(compiledContract.abi, compiledContract.byteCode).then(deploymentInformation => {
           console.log("Deployment info is ", deploymentInformation);
-          // web3Handler.addNewProject(
-          //   deploymentInformation.contractAddress,
-          //   req.body.name,
-          //   req.body.name,
-          //   req.body.tokenName,
-          //   req.body.tokenSymbol,
-          //   "xinfin"
-          // );
+          web3Handler.addNewProject(
+            deploymentInformation.contractAddress,
+            req.body.name,
+            req.body.description,
+            req.body.organizationName
+          );
           let newProject = new Object();
           newProject.name = req.body.name;
           newProject.industry = req.body.industry;
@@ -122,6 +121,16 @@ module.exports = {
       })
     }).catch(err => {
       res.status(400).json({message: err})
+    })
+  },
+
+  fetchNotifications: (req, res) => {
+    Notifications.findAll({
+      where: {
+        client_id: req.client.uniqueId
+      }
+    }).then(notifications => {
+      res.send({notificationList: notifications});
     })
   }
 }

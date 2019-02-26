@@ -14,6 +14,7 @@ const defaultProps = {
   tasks: false,
   mssgs: false,
 };
+import { connect } from 'react-redux';
 
 class HeaderDropdown extends Component {
 
@@ -38,15 +39,28 @@ class HeaderDropdown extends Component {
   }
 
   dropNotif() {
-    const itemsCount = 1;
+    const itemsCount = this.props.user.notificationList.length;
+    let notificationBell;
+    if(itemsCount>0){
+      notificationBell = <DropdownToggle nav>
+        <i className= "fa fa-bell-o"></i><Badge pill color="danger">{itemsCount}</Badge>
+      </DropdownToggle>;
+    }
+    else{
+      notificationBell = <DropdownToggle nav>
+        <i className= "fa fa-bell-o"></i><Badge pill color="danger"></Badge>
+      </DropdownToggle>
+    }
+    let notificationList = [];
+    for(let i=0; i< itemsCount; i++){
+      notificationList.push(<DropdownItem><i className="icon-user-follow text-success"></i> this.props.user.notificationList[i].message</DropdownItem>);
+    }
     return (
       <Dropdown nav className="d-md-down-none" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle nav>
-          <i className= "fa fa-bell-o"></i><Badge pill color="danger">{itemsCount}</Badge>
-        </DropdownToggle>
+        {notificationBell}
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>You have {itemsCount} notifications</strong></DropdownItem>
-          <DropdownItem><i className="icon-user-follow text-success"></i> New user registered</DropdownItem>
+          {notificationList}
         </DropdownMenu>
       </Dropdown>
     );
@@ -82,8 +96,12 @@ class HeaderDropdown extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    user: state.user
+})
 
 HeaderDropdown.propTypes = propTypes;
 HeaderDropdown.defaultProps = defaultProps;
 
-export default HeaderDropdown;
+export default connect(mapStateToProps)(HeaderDropdown);

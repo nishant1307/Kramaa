@@ -1,36 +1,59 @@
 var mqtt = require('mqtt')
-
-var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://localhost:1883')
+var client  = mqtt.connect('mqtt://broker.mqttdashboard.com', {
+  clientId: 'clientId-inejrnwsoH'
+})
 
 client.on('connect', function () {
-  client.subscribe('presence', function (err) {
+  client.subscribe('Tanmay', function (err) {
     if (!err) {
-      client.publish('presence', 'Hello mqtt')
+      console.log("Subcribed");
     }
   })
 })
 
+let eventMessage;
+var db = require('../database/models/index');
+var IotEvent= db.iotEvents;
 client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log(message.toString())
+  eventMessage = message.toString().split(';');
+  let splitMessage=[]
+  for(let i=0; i<eventMessage.length; i++){
+    let newMessage = new Object();
+    newMessage.message= eventMessage[i].split(':')[1];
+    newMessage.eventType = eventMessage[i].split(':')[0];
+    splitMessage.push(newMessage);
+  }
+  console.log(splitMessage);
+  IotEvent.bulkCreate(splitMessage).then(()=> {
+
+  })
+
+
 })
 
-
-var db = require('../database/models/index');
-// const web3Handler = require('../web3Handler/ropstenHandler');
-
-var Project = db.project;
 module.exports = {
   getEvents: (req, res) => {
-    Project.findOne({
-      where: {
-        uniqueId: req.body.projectID
-      }
-    }).then(project => {
-      web3Handler.checkTotalTokenSupply(project.tokenContractAddress).then(totalSupply=> {
-        res.send({project: project, totalSupply: totalSupply});
-      })
+    IotEvent.findAll().then(events => {
+      res.send({eventList: events});
     })
   },
+
+  getLocation: (req, res) => {
+    let latitude, longitude;
+    IotEvent.findOne({
+      where: {
+        eventType: 'Latitude'
+      }
+    }).then(event => {
+      latitude= event.message;
+      IotEvent.findOne({
+        where: {
+          eventType: 'Longitude'
+        }
+      }).then(result => {
+        longitude = result.message;
+        res.send({latitude: latitude, longitude: longitude});
+      })
+    })
+  }
 }

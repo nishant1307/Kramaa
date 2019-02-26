@@ -130,7 +130,7 @@ class ProjectFormModal extends Component {
     //     this.props.parentHandler(res.data.project.name)
     //   }
     // });
-    this.props.createNewProject({name: name, industry: industry, subIndustry: subIndustry, tokenName: name, tokenSymbol: name, clientToken: sessionStorage.getItem("clientToken")});
+    this.props.createNewProject({name: name, description: description, industry: industry, subIndustry: subIndustry, tokenName: name, tokenSymbol: name, organizationName: this.props.user.organization.organizationName, clientToken: sessionStorage.getItem("clientToken")});
   }
 
   render() {
@@ -172,7 +172,11 @@ class ProjectFormModal extends Component {
                     <Label htmlFor="text-input">Project Description</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="text" id="text-input" name="text-input" placeholder="Text" />
+                    <Input type="text"
+                           id="text-input"
+                          name="description"
+                          onChange={this.handleChange}
+                          placeholder="Text" />
                     <FormText color="muted">Describe your project</FormText>
                   </Col>
                 </FormGroup>

@@ -29,15 +29,24 @@ export default {
     },
     {
       name: 'Analytics',
-      url: '/theme/typography',
       icon: 'cui-graph',
-      attributes: { disabled: true },
+      children: [
+        {
+          name: 'View Events',
+          url: '/analytics',
+          icon: 'cui-magnifying-glass',
+        },
+        {
+          name: 'View Location',
+          url: '/locationAnalytics',
+          icon: 'cui-magnifying-glass',
+        }
+      ]
     },
     {
       name: 'Explorer',
-      url: '/theme/typography',
+      url: '/explorer',
       icon: 'fa fa-binoculars',
-      attributes: { disabled: true },
     },
     {
       name: 'Store',

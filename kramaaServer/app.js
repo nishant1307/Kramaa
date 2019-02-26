@@ -21,6 +21,7 @@ app.use('/api/projects', require('./projectHandler/routes'));
 app.use('/api/devices', require('./deviceHandler/routes'));
 app.use('/api/things', require('./thingHandler/routes'));
 app.use('/api/explorer', require('./explorerHandler/routes'));
+app.use('/api/events', require('./iotEventHandler/routes'));
 
 app.use(express.static(path.resolve(__dirname, '..','dist')));
 app.use(express.static(path.resolve(__dirname, '..','kramaaClient/assets')));

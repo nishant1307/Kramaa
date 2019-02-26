@@ -15,11 +15,19 @@ const UserDatabase = React.lazy(() => import('./UserDatabase'));
 import ProjectPage from './ProjectPage';
 import ThingPage from './ThingPage';
 import DevicePage from './DevicePage';
+import Explorer from './Explorer';
+import ExplorerContractPage from './ExplorerContractPage';
+import Analytics from './Analytics';
+import LocationAnalytics from './LocationAnalytics';
 const routes = [
   { path: '/profile', name: 'Profile', component: Profile},
   { path: '/settings', name: 'Settings', component: Profile},
   { path: '/projects', name: 'Projects', component: Projects},
   { path: '/devices', name: 'Devices', component: Devices},
+  { path: '/explorer', name: 'Explorer', component: Explorer},
+  { path: '/analytics', name: 'Analytics', component: Analytics},
+  { path: '/locationAnalytics', name: 'LocationAnalytics', component: LocationAnalytics},
+  { path: '/contractPage/:contractAddress', name: 'Contract Page', component: ExplorerContractPage},
   { path: '/things', name: 'Things', component: Things},
   { path: '/project/:projectID', name: 'ProjectPage', component: ProjectPage},
   { path: '/thing/:thingID', name: 'ThingPage', component: ThingPage},

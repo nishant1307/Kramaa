@@ -6,7 +6,7 @@ import 'react-table/react-table.css';
 import { Button} from 'reactstrap';
 import { connect } from 'react-redux';
 
-class Explorer extends Component {
+class ExplorerContractPage extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -15,10 +15,14 @@ class Explorer extends Component {
       projectList: [],
       organization: ''
     };
+
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.goToDevice = this.goToDevice.bind(this);
   }
 
+
   componentDidMount() {
-    axios.post("/api/explorer/getProjectsFromOrganizationName", {organizationName: this.props.user.organization.organizationName})
+    axios.post("/api/explorer/getEventsFromContractAddress", {contractAddress: this.props.match.params.contractAddress})
     .then(res=> {
       this.setState({
         projectList: res.data.projectList
@@ -26,21 +30,26 @@ class Explorer extends Component {
     });
   }
 
+
+  goToDevice(uniqueId) {
+    console.log(uniqueId);
+    this.props.history.push('/device/'+uniqueId);
+  }
+
   render(){
     const { email, projectList, organization} = this.state;
     const columns = [{
       Header: 'Contract Address',
-      accessor: 'contractAddress',
-      Cell: (props) => {
-        let url = "/contractPage/"+props.original.contractAddress;
-        return <Link to = {url}>{props.original.contractAddress}</Link>;
-      }
+      accessor: 'contractAddress'
     }, {
       Header: 'Name',
       accessor: 'name',
     }, {
       Header: 'Description',
       accessor: 'description'
+    },  {
+      Header: 'Action',
+      Cell: ({ row }) => (<Button block onClick={(e) => this.goToDevice(row.uniqueId)} color="primary">View</Button>)
     }];
     return(
         <ReactTable
@@ -48,7 +57,7 @@ class Explorer extends Component {
           columns={columns}
           onFetchData={this.fetchData}
           noDataText="Not available"
-          getTdProps ={(state, rowInfo, column) => {
+          getTrProps ={(state, rowInfo) => {
             if (rowInfo && rowInfo.row) {
               return {
                 onClick: (e) => {
@@ -72,4 +81,4 @@ const mapStateToProps = (state) => ({
     user: state.user
 })
 
-export default connect(mapStateToProps)(Explorer)
+export default connect(mapStateToProps)(ExplorerContractPage)

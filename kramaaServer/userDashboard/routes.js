@@ -13,7 +13,7 @@ router.post('/getCounts',isLoggedIn, impl.getCounts);
 router.post('/createProject', isLoggedIn, impl.createProject);
 router.post('/createThing', isLoggedIn, impl.createThing);
 router.post('/inviteColleague', isLoggedIn, impl.inviteColleague);
-
+router.post('/fetchNotifications', isLoggedIn, impl.fetchNotifications);
 module.exports = router;
 
 // route middleware to make sure a user is logged in

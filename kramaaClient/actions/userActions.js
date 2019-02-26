@@ -1,7 +1,7 @@
 // authentication.js
 
 import axios from 'axios';
-import { GET_ERRORS, CURRENT_USER_INFO, NEW_PROJECT_CREATED, OPEN_PROJECT_MODAL, CLOSE_PROJECT_MODAL } from './types';
+import { GET_ERRORS, CURRENT_USER_INFO, NEW_PROJECT_CREATED, OPEN_PROJECT_MODAL, CLOSE_PROJECT_MODAL, CREATE_NEW_NOTIFICATION, FETCH_NOTIFICATION } from './types';
 import setAuthToken from '../setAuthToken';
 import jwt_decode from 'jwt-decode';
 
@@ -41,14 +41,65 @@ export const createNewProject = (projectDetails) => dispatch => {
             .then(res=> {
                   dispatch({
                     type: NEW_PROJECT_CREATED,
-                    payload: ''
+                    payload: res.data.project
                   });
-
             })
             .catch(err => {
+              console.log(err);
                 dispatch({
                     type: GET_ERRORS,
                     payload: err
                 });
             })
+}
+
+export const createNewNotification = (notificationDetails) =>dispatch => {
+  axios.post("/api/dashboard/createNewNotification", projectDetails)
+          .then(res=> {
+                dispatch({
+                  type: FETCH_NOTIFICATION,
+                  payload: res.data.notificationDetail
+                });
+
+          })
+          .catch(err => {
+              dispatch({
+                  type: GET_ERRORS,
+                  payload: err
+              });
+          })
+}
+
+export const readNotification = (notificationDetails) =>dispatch => {
+  axios.post("/api/dashboard/createNewNotification", projectDetails)
+          .then(res=> {
+                dispatch({
+                  type: FETCH_NOTIFICATION,
+                  payload: res.data.notificationDetail
+                });
+
+          })
+          .catch(err => {
+              dispatch({
+                  type: GET_ERRORS,
+                  payload: err
+              });
+          })
+}
+
+export const fetchNotifications = (clientToken) =>dispatch => {
+  axios.post("/api/dashboard/fetchNotifications", {clientToken: clientToken})
+          .then(res=> {
+                dispatch({
+                  type: FETCH_NOTIFICATION,
+                  payload: res.data.notifications
+                });
+
+          })
+          .catch(err => {
+              dispatch({
+                  type: GET_ERRORS,
+                  payload: err
+              });
+          })
 }
