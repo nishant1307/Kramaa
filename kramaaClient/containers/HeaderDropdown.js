@@ -39,7 +39,7 @@ class HeaderDropdown extends Component {
   }
 
   dropNotif() {
-    const itemsCount = 0;
+    const itemsCount = this.props.user.notificationList.length;
     let notificationBell;
     if(itemsCount>0){
       notificationBell = <DropdownToggle nav>
