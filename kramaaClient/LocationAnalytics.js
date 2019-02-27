@@ -9,7 +9,7 @@ class LocationAnalytics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
     };
   }
 
@@ -22,7 +22,7 @@ class LocationAnalytics extends Component {
         <CardBody>
           <GoogleMapsComponent
             key="map"
-            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyASyYRBZmULmrmw_P9kgr7_266OhFNinPA"
+            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBLb2_jv4cWTCFwWS7oXQ7ura32iJzvT54"
             loadingElement={<div style={{height: `100%`}}/>}
             containerElement={<div style={{height: `400px`}}/>}
             mapElement={<div style={{height: `100%`}}/>}
