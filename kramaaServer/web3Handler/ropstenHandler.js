@@ -78,14 +78,14 @@ module.exports = {
         gasPrice: gasPrice
       };
 
-      web3.eth.estimateGas(transaction).then(gasLimit => {
-        transaction["gasLimit"] = gasLimit;
+      // web3.eth.estimateGas(transaction).then(gasLimit => {
+        transaction["gasLimit"] = 2000000;
         web3.eth.accounts.signTransaction(transaction, config.testnetFaucetPrivateKey).then(result => {
           web3.eth.sendSignedTransaction(result.rawTransaction).then(receipt => {
             resolve(receipt);
           });
         });
-      });
+      // });
     });
   },
 
