@@ -23,9 +23,6 @@ const validationSchema = function (values) {
     .min(1, `Last name has to be at least 1 character`)
     .matches(/(?=.*[a-z])(?=.*[A-Z])/, 'Last name must contain only A-Z uppercase or lowercase letters\n')
     .required('Last name is required'),
-    email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required!'),
     organizationName: Yup.string()
     .min(1, `Organization name has to be at least 1 characters`)
     .required('Organization name is required'),
